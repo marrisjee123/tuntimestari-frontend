@@ -1,0 +1,247 @@
+.set-hours-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  position: relative;
+}
+
+.calendar-navigation {
+  margin-bottom: 20px;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.calendar-header {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 2;
+}
+
+.calendar-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.calendar-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.calendar-cell {
+  border: 1px solid #ddd;
+  text-align: center;
+  box-sizing: border-box;
+  width: 120px;
+  padding: 0;
+  height: 80px;
+  position: relative;
+}
+
+.calendar-cell.selected {
+  background-color: rgba(0, 123, 255, 0.3);
+}
+
+.week-number {
+  font-weight: bold;
+  text-align: center;
+  background-color: #f0f0f0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 840px;
+}
+
+.date-cell {
+  width: 120px;
+  height: 80px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 2;
+}
+
+.empty-cell {
+  background-color: #f8f8f8;
+  border: none;
+  width: 120px;
+  height: 80px;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+}
+
+.employee-cell {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  width: 120px;
+  height: 80px;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+}
+
+.shift {
+  position: relative;
+  background-color: #d1e7dd;
+  border-radius: 3px;
+  margin: auto;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+  height: 99%;
+  width: 99%;
+  box-sizing: border-box;
+  padding: 2px;
+}
+
+.shift-time {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.draggable-cell {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: red;
+  grid-row: 1 / 2;
+  justify-self: end;
+  align-self: start;
+  margin: 0;
+  padding: 2px;
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: blue;
+  grid-row: 3 / 4;
+  justify-self: center;
+  align-self: end;
+  margin: 0;
+  padding: 2px;
+}
+
+.week-separator {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  height: 100%;
+  width: 4px;
+  background-color: #000;
+}
+
+button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  width: 300px;
+  max-width: 100%;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 3;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  margin: 0;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-buttons button:hover {
+  background-color: #0056b3;
+}
+
+.modal-buttons button:last-child {
+  background-color: #6c757d;
+}
+
+.modal-buttons button:last-child:hover {
+  background-color: #5a6268;
+}
+
+.time-selectors {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.time-selectors label {
+  font-weight: bold;
+}
+
+.time-selectors select {
+  margin: 0 5px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.drag-over {
+  border: 2px dashed #007bff;
+  background-color: #e3f2fd;
+}
+
+.selected {
+  background-color: #d3d3d3;
+}

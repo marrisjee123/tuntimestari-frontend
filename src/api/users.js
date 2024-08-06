@@ -2,15 +2,13 @@
 
 import { axiosInstance } from "../api";
 
-export const getUsers = async () => {
+
+const getUsers = async () => {
   const response = await axiosInstance.get('/users/');
   return response.data;
 };
+export default getUsers;
 
-export const getUser = async (id) => {
-  const response = await axiosInstance.get(`/users/${id}/`);
-  return response.data;
-};
 
 export const createUser = async (userData) => {
   const response = await axiosInstance.post('/users/', userData);

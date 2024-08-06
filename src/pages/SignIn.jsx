@@ -1,32 +1,28 @@
-// src/pages/SignIn.jsx
-
 import React, { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import { Container, TextField, Button, Typography, Grid, Paper, Avatar, Box, CssBaseline } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login } from '../api.js';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { axiosInstance } from '../api';
+import { useAuth } from '../context/AuthContext';
 
-const theme = createTheme();
-
-export default function SignIn() {
+const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await login(username, password);
+      const response = await axiosInstance.post('/token/', { username, password });
+
+      setUser(response.data.user);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      Cookies.set('access_token', response.data.access, { secure: true, sameSite: 'Strict' });
+      Cookies.set('refresh_token', response.data.refresh, { secure: true, sameSite: 'Strict' });
+
       setError('');
       navigate('/');
     } catch (error) {
@@ -36,17 +32,10 @@ export default function SignIn() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Paper elevation={6} sx={{ p: 4, mt: 8 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -83,29 +72,26 @@ export default function SignIn() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Button href="#" variant="body2">
                   Forgot password?
-                </Link>
+                </Button>
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body2">
+                <Button href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
-                </Link>
+                </Button>
               </Grid>
             </Grid>
           </Box>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Paper>
+    </Container>
   );
-}
+};
+
+export default SignIn;

@@ -1,7 +1,7 @@
 // src/components/Users.jsx
 
 import React, { useEffect, useState } from 'react';
-import { getUsers } from '../api/users'; // Käytetään API-kutsua tiedostosta users.js
+import  getUsers  from '../api/users';
 
 const Users = () => {
   const [users, setUsers] = useState([]);

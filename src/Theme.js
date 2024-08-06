@@ -6,10 +6,10 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2', // Määritä pääväri
+      main:'#000000', // Määritä pääväri
     },
     secondary: {
-      main: '#dc004e', // Määritä toissijainen väri
+      main: '#000000', // Määritä toissijainen väri
     },
   },
   typography: {
