@@ -99,6 +99,7 @@ const SetHours = () => {
       currentShift.employeeId !== null &&
       currentShift.dayIndex !== null
     ) {
+      // Päivitä tilat kun modaali aukeaa
       setShiftStartHour(
         clipboardShift.startHour !== undefined
           ? String(clipboardShift.startHour).padStart(2, '0')
@@ -172,6 +173,7 @@ const SetHours = () => {
 
     if (sourceShiftIndex === -1) return;
 
+    // Kopioidaan siirrettävä vuoro
     const draggedShift = sourceEmployee.shifts[sourceShiftIndex];
 
     let updatedSourceShifts = sourceEmployee.shifts.filter(
@@ -179,6 +181,7 @@ const SetHours = () => {
     );
 
     if (destinationShiftIndex !== -1) {
+      // Jos kohteessa on jo vuoro, vaihdetaan ne paikat
       const targetShift = destinationEmployee.shifts[destinationShiftIndex];
 
       updatedSourceShifts.push({
@@ -207,6 +210,7 @@ const SetHours = () => {
 
       setData({ ...data, employees: updatedEmployees });
     } else {
+      // Jos kohteessa ei ole vuoroa, siirretään se
       const updatedDestinationShifts = destinationEmployee.shifts.slice();
       updatedDestinationShifts.push({
         ...draggedShift,
@@ -248,9 +252,10 @@ const SetHours = () => {
       startMinute: parseInt(formattedStartMinute),
       endHour: parseInt(formattedEndHour),
       endMinute: parseInt(formattedEndMinute),
-      dayIndex: currentShift.dayIndex,
+      dayIndex: currentShift.dayIndex, // Lisää dayIndex uuteen shift-objektiin
     };
 
+    // Päivitä kaikki valitut solut
     const updatedEmployees = data.employees.map((emp) => {
       if (selectedCells.some((cell) => cell.employeeId === emp.id)) {
         const updatedShifts = emp.shifts.filter(
@@ -282,6 +287,7 @@ const SetHours = () => {
         employeeId,
         dayIndex,
       });
+      // Päivitä suoraan tiloja
       setShiftStartHour(
         clipboardShift.startHour !== undefined
           ? String(clipboardShift.startHour).padStart(2, '0')
@@ -304,7 +310,7 @@ const SetHours = () => {
       );
       setModalIsOpen(true);
       setIsPasting(false);
-      console.log('Pasting shift:', clipboardShift);
+      console.log('Pasting shift:', clipboardShift); // Logaa liitettävä vuoro
     } else {
       alert('Leikepöydällä ei ole kelvollista vuoroa liitettäväksi.');
     }
@@ -365,7 +371,7 @@ const SetHours = () => {
         dayIndex: shift.dayIndex,
       });
       alert('Työvuoro kopioitu.');
-      console.log('Copied shift:', shift);
+      console.log('Copied shift:', shift); // Logaa kopioitu vuoro
     } else {
       alert('Työvuoro on tyhjä, ei voida kopioida.');
     }
@@ -382,9 +388,11 @@ const SetHours = () => {
       .shifts.some((shift) => shift.dayIndex === dayIndex);
 
     if (hasShift) {
+      // Jos solussa on vuoro, estetään kaikki muut toiminnot paitsi raahaaminen
       return;
     }
 
+    // Jos solussa ei ole vuoroa, jatka normaalisti
     setIsSelecting(true);
     setSelectedCells([{ employeeId, dayIndex }]);
     setSelectedEmployeeId(employeeId);
@@ -421,6 +429,7 @@ const SetHours = () => {
         });
         setModalIsOpen(true);
       } else {
+        // Aseta tyhjä työntekijä-ID ja ensimmäinen valittu päivä muokkausmoodiin
         setCurrentShift({
           employeeId: null,
           dayIndex: firstCell.dayIndex,
@@ -474,7 +483,7 @@ const SetHours = () => {
                     <div>{getWeekdayName(date)}</div>
                     <div>{format(date, 'dd.MM.yyyy')}</div>
                   </div>
-                  {index % 7 === 6 && (
+                  {index % 7 === 7 && (
                     <>
                       <div className="week-separator"></div>
                       <div className="calendar-cell date-cell-separator"></div>
@@ -633,7 +642,7 @@ const SetHours = () => {
               <TextField
                 label="Aloitustunti"
                 type="number"
-                value={shiftStartHour || '00'}
+                value={shiftStartHour || '00'} // Varmistaa oletusarvon
                 onChange={(e) => setShiftStartHour(e.target.value)}
                 inputProps={{ min: '0', max: '23', step: '1' }}
                 fullWidth
@@ -643,7 +652,7 @@ const SetHours = () => {
               <TextField
                 label="Aloitusminuutti"
                 type="number"
-                value={shiftStartMinute || '00'}
+                value={shiftStartMinute || '00'} // Varmistaa oletusarvon
                 onChange={(e) => setShiftStartMinute(e.target.value)}
                 inputProps={{ min: '0', max: '59', step: '1' }}
                 fullWidth
@@ -653,7 +662,7 @@ const SetHours = () => {
               <TextField
                 label="Lopetustunti"
                 type="number"
-                value={shiftEndHour || '00'}
+                value={shiftEndHour || '00'} // Varmistaa oletusarvon
                 onChange={(e) => setShiftEndHour(e.target.value)}
                 inputProps={{ min: '0', max: '23', step: '1' }}
                 fullWidth
@@ -663,7 +672,7 @@ const SetHours = () => {
               <TextField
                 label="Lopetusminuutti"
                 type="number"
-                value={shiftEndMinute || '00'}
+                value={shiftEndMinute || '00'} // Varmistaa oletusarvon
                 onChange={(e) => setShiftEndMinute(e.target.value)}
                 inputProps={{ min: '0', max: '59', step: '1' }}
                 fullWidth
@@ -701,3 +710,4 @@ const SetHours = () => {
 };
 
 export default SetHours;
+

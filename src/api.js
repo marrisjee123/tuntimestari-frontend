@@ -8,7 +8,7 @@ const csrftoken = Cookies.get('csrftoken');
 axios.defaults.headers.common['X-CSRFTOKEN'] = csrftoken;
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: 'http://89.166.99.23:8000/api',
   timeout: 5000,
   withCredentials: true,
 });
@@ -25,7 +25,7 @@ axiosInstance.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const refreshToken = Cookies.get('refresh_token');

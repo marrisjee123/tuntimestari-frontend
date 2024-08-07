@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  overflow-x: auto;
+  overflow-x: auto; /* Salli vaakasuuntainen vieritys */
   position: relative;
 }
 
@@ -12,42 +12,31 @@
 }
 
 .calendar-grid {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.calendar-header {
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 0;
-  background-color: white;
-  z-index: 2;
-}
-
-.calendar-body {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 100px repeat(21, 1fr); /* 21 päivää + 1 työntekijän nimi */
   width: 100%;
   overflow-x: auto;
 }
 
+.calendar-header,
+.calendar-body {
+  display: contents; /* Tehdään header ja body osasta gridin jatkumo */
+}
+
 .calendar-row {
-  display: flex;
-  flex-direction: row;
+  display: contents; /* Jokainen rivi on osa ylempää gridiä */
 }
-
-.calendar-cell {
-  border: 1px solid #ddd;
+.calendar-cell,
+.date-cell,
+.employee-cell {
   text-align: center;
+  border: 1px solid #ddd;
   box-sizing: border-box;
-  width: 120px;
-  padding: 0;
-  height: 80px;
-  position: relative;
+  padding: 10px;
+  white-space: nowrap; /* Estää tekstin rivityksen */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .calendar-cell.selected {
   background-color: rgba(0, 123, 255, 0.3);
 }
@@ -56,19 +45,15 @@
   font-weight: bold;
   text-align: center;
   background-color: #f0f0f0;
-  height: 80px;
+  height: 80px; /* Kiinteä solun korkeus */
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 840px;
+  width: 100%; /* Viikon solujen leveys yhteensä */
 }
 
 .date-cell {
-  width: 120px;
-  height: 80px;
-  position: sticky;
-  top: 0;
   background-color: white;
   z-index: 2;
 }
@@ -76,41 +61,34 @@
 .empty-cell {
   background-color: #f8f8f8;
   border: none;
-  width: 120px;
-  height: 80px;
+  width: 100px; /* Kiinteä työntekijän nimen solun leveys */
   position: sticky;
   left: 0;
   z-index: 3;
 }
 
 .employee-cell {
-  background-color: #f0f0f0;
-  font-weight: bold;
-  width: 120px;
-  height: 80px;
-  position: sticky;
-  left: 0;
-  z-index: 3;
+  grid-column: 1; /* Työntekijän nimi aina ensimmäisessä sarakkeessa */
 }
 
 .shift {
   position: relative;
   background-color: #d1e7dd;
   border-radius: 3px;
-  margin: auto;
+  margin: auto; /* Keskittää työvuoron */
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr; /* Automaattiset koot ruksille ja kopioi-napille, 1fr ajalle */
   align-items: center;
   justify-content: center;
-  height: 99%;
-  width: 99%;
+  height: 99%; /* Täytä koko solun korkeus */
+  width: 99%; /* Täytä koko solun leveys */
   box-sizing: border-box;
-  padding: 2px;
+  padding: 2px; /* Lisätään hieman paddingia */
 }
 
 .shift-time {
   text-align: center;
-  font-size: 18px;
+  font-size: 18px; /* Pienennetään fonttikokoa */
   font-weight: 700;
 }
 
@@ -128,11 +106,11 @@
   cursor: pointer;
   font-size: 12px;
   color: red;
-  grid-row: 1 / 2;
+  grid-row: 1 / 2; /* Ensimmäinen rivi */
   justify-self: end;
   align-self: start;
-  margin: 0;
-  padding: 2px;
+  margin: 0; /* Poistetaan marginaali */
+  padding: 2px; /* Lisätään hieman paddingia */
 }
 
 .copy-btn {
@@ -141,20 +119,27 @@
   cursor: pointer;
   font-size: 12px;
   color: blue;
-  grid-row: 3 / 4;
+  grid-row: 3 / 4; /* Kolmas rivi */
   justify-self: center;
   align-self: end;
-  margin: 0;
-  padding: 2px;
+  margin: 0; /* Poistetaan marginaali */
+  padding: 2px; /* Lisätään hieman paddingia */
 }
-
+.week-number {
+  background-color: #eee;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: span 7; /* Span over 7 days */
+}
 .week-separator {
   position: absolute;
   top: 0;
-  right: -1px;
+  right: -1px; /* Viivan asettaminen solun oikeaan reunaan */
   bottom: 0;
-  height: 100%;
-  width: 4px;
+  height: 100%; /* Pystysuoran viivan korkeus */
+  width: 4px; /* Paksumpi viiva */
   background-color: #000;
 }
 
@@ -171,6 +156,7 @@ button:hover {
   background-color: #0056b3;
 }
 
+/* Modal styling */
 .modal {
   position: absolute;
   top: 50%;
@@ -238,10 +224,10 @@ button:hover {
 }
 
 .drag-over {
-  border: 2px dashed #007bff;
-  background-color: #e3f2fd;
+  border: 2px dashed #007bff; /* Tai muu haluttu korostus */
+  background-color: #e3f2fd; /* Korostus väri */
 }
 
 .selected {
-  background-color: #d3d3d3;
+  background-color: #d3d3d3; /* Tai muu haluttu väri */
 }

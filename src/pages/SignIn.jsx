@@ -26,8 +26,16 @@ const SignIn = () => {
       setError('');
       navigate('/');
     } catch (error) {
-      console.error('Login error:', error);
-      setError('Login failed. Please check your credentials.');
+      if (error.response) {
+        console.error('Login error response:', error.response);
+        setError('Login failed. Please check your credentials.');
+      } else if (error.request) {
+        console.error('Login error request:', error.request);
+        setError('No response from server. Please try again later.');
+      } else {
+        console.error('Login error message:', error.message);
+        setError('An error occurred. Please try again.');
+      }
     }
   };
 
